@@ -1,4 +1,4 @@
-function BlogList({blogs, title, handleDelete}) {
+function BlogList({blogs, title}) {
 
     return (
         <div className="blog-list">
@@ -7,8 +7,8 @@ function BlogList({blogs, title, handleDelete}) {
             <div className="blog-preview" key={blog.id}>
                 <h2>{ blog.title }</h2>
                 <h4>{ blog.body }</h4>
+                <br/>
                 <p>Written by { blog.author }</p>
-                <button onClick={() => handleDelete(blog.id)}>Delete article</button>
             </div>
         ))}
         </div>

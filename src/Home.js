@@ -3,28 +3,39 @@ import BlogList from './BlogList';
 
 function Home() {
 
-    const [name, setName] = useState('Mario')
+    const [blogs, setBlogs] = useState(null);
 
-    const [blogs, setBlogs] = useState([
-        { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
-        { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
-        { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 },
-    ])
+    const [isPending, setisPending] = useState(true);
 
+    const [isError, setisError] = useState(null)
+    
     useEffect(() => {
-        console.log('useEffect ran');
-        console.log(blogs)
-    }, [name]);
+        setTimeout(() => {
+            fetch('http://localhost:8000/blogs')
+                .then(res => {
+                    if(!res.ok) {
+                        throw Error('Error 404 Message');
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    setBlogs(data);
+                    setisPending(false);
+                    setisError(null)
+                })
+                .catch(err =>{
+                    setisError(err.message);
+                    setisPending(false);
+                })
+        }, 1000);
+    }, [])
 
-    function handleDelete(id) {
-        const newBlog = blogs.filter((blog) => blog.id !== id);
-        setBlogs(newBlog)
-    }
+
     return(
         <div className="home">
-            <BlogList blogs = {blogs} title = {"All blogs"} handleDelete={handleDelete}/>
-            <button onClick={() => setName('Luigi')}>Change Name</button>
-            <p>{name}</p>
+            {isError && <div>{isError}</div>}
+            {isPending && <div>Loading.....</div>}
+            {blogs && <BlogList blogs = {blogs}></BlogList>}
         </div>
     )
 }
