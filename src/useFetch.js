@@ -32,7 +32,7 @@ function useFetch(url) {
                     setisPending(false);
                 }
             })
-        }, 1000);
+        }, 400);
         return () => AbortCont.abort();
 
     }, [url])

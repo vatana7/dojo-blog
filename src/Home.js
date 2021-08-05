@@ -9,6 +9,7 @@ function Home() {
             {isError && <div>{isError}</div>}
             {isPending && <div>Loading.....</div>}
             {blogs && <BlogList blogs = {blogs}></BlogList>}
+            
         </div>
     )
 }
